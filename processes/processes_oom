@@ -1,0 +1,37 @@
+#!/bin/sh
+
+case $1 in
+   config)
+        cat <<'EOM'
+graph_category processes
+graph_title OOM Kills
+graph_vlabel oom kills
+mysqld.label mysql
+mysqld.type DERIVE
+mysqld.min 0
+mysqld.draw LINE1
+httpd.label http
+httpd.type DERIVE
+httpd.min 0 
+httpd.draw LINE1
+phpd.label php
+phpd.type DERIVE
+phpd.min 0
+phpd.draw LINE1
+clamd.label clamav
+clamd.type DERIVE
+clamd.min 0
+clamd.draw LINE1
+EOM
+        exit 0;;
+esac
+
+printf "mysqld.value "
+fgrep OOM /var/log/messages | fgrep mysqld | wc -l | cut -d ' ' -f 1
+printf "httpd.value "
+fgrep OOM /var/log/messages | fgrep httpd | wc -l | cut -d ' ' -f 1
+printf "phpd.value "
+fgrep OOM /var/log/messages | fgrep php | wc -l | cut -d ' ' -f 1
+printf "clamd.value "
+fgrep OOM /var/log/messages | fgrep clamd | wc -l | cut -d ' ' -f 1
+

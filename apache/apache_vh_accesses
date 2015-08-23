@@ -1,0 +1,19 @@
+#!/bin/sh
+
+case $1 in
+   config)
+        cat <<'EOM'
+graph_category apache
+graph_title Accesses By Virtual Host
+graph_vlabel requests per second
+website.label website
+website.type DERIVE
+website.min 0
+website.draw LINE1
+EOM
+        exit 0;;
+esac
+
+printf "website.value "
+wc -l /usr/local/apache/domlogs/website.com | cut -d ' ' -f 1
+
